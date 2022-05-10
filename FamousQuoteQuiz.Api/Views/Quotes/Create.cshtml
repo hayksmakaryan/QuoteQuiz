@@ -1,0 +1,43 @@
+﻿@model FamousQuoteQuiz.Application.Quotes.Commands.CreateQuoteCommand
+@{
+    ViewData["Title"] = "Qoutes";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-route-returnUrl="/Qoutes/Index" asp-controller="Quotes" asp-action="Create" method="post" enctype="multipart/form-data">
+            <h4>Create a new Qoute.</h4>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="@Model.Text"></label>
+                <input asp-for="@Model.Text" class="form-control" />
+                <span asp-validation-for="@Model.Text" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Author"></label>
+                <input asp-for="@Model.AuthorId" class="form-control" />
+                <span asp-validation-for="@Model.Author" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+    @if (@ViewBag.Result != null)
+    {
+        if (ViewBag.Result)
+        {
+            <h6 style="color:green">Successfully added</h6>
+        }
+        else
+        {
+            <h6 style="color:Red">Failed</h6>
+        }
+    }
+ 
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

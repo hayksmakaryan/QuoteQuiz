@@ -1,0 +1,142 @@
+﻿@using FamousQuoteQuiz.Application.ViewModels
+@model IEnumerable<FamousQuoteQuiz.Application.ViewModels.ApplicationUserVM>
+
+@{
+    ViewData["Title"] = "Achievements";
+}
+
+<h1>Achievements</h1>
+
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <style type="text/css">
+        body {
+            font-family: Arial;
+            font-size: 10pt;
+        }
+
+        .Grid {
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+            background-color: #fff;
+        }
+
+            .Grid th {
+                background-color: #B8DBFD;
+                color: #333;
+                font-weight: bold;
+            }
+
+            .Grid th, .Grid td {
+                padding: 5px;
+                border: 1px solid #ccc;
+            }
+
+            .Grid img {
+                cursor: pointer;
+            }
+
+        .ChildGrid {
+            width: 100%;
+        }
+
+            .ChildGrid th {
+                background-color: #6C6C6C;
+                color: #fff;
+                font-weight: bold;
+            }
+    </style>
+</head>
+<table cellpadding="0" cellspacing="0" class="Grid">
+        <thead>
+            <tr>
+                <th></th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="~/Images/plus.png" alt="plus" height="15" width="15"/>
+                        <div style="display:none">
+                            <table cellpadding="0" cellspacing="0" class="ChildGrid">
+                                <tr>
+                                    <th></th>
+                                    <th>RoundID</th>
+                                    <th>StartDate</th>
+                                    <th>Mode</th>
+                                    <th>Completed</th>
+                                </tr>
+                                @foreach (RoundVM round in item.Rounds)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="~/Images/plus.png" alt="plus" height="15" width="15">
+                                            <div style="display:none">
+                                                <table cellpadding="0" cellspacing="0" class="ChildGrid">
+                                                    <tr>
+                                                        <th>QuestionID</th>
+                                                        <th>QouteID</th>
+                                                        <th>UserAnswer</th>
+                                                        <th>Result</th>
+                                                    </tr>
+                                                    @foreach (QuestionVM question in round.Questions)
+                                                    {
+                                                        <tr>
+                                                            <td>@question.Id</td>
+                                                            <td>@question.QouteId</td>
+                                                            <td>@question.UserAnswer</td>
+                                                            <td>@question.Result</td>
+                                                        </tr>
+                                                    }
+                                                </table>
+                                            </div>
+                                        </td>
+                                        <td>@round.Id</td>
+                                        <td>@round.StartDate</td>
+                                        <td>@round.Mode</td>
+                                        <td>@round.Comlpeted</td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    //Assign Click event to Plus Image.
+    $("body").on("click", "img[src*='plus.png']", function () {
+        $(this).closest("tr").after("<tr><td></td><td colspan = '999'>" + $(this).next().html() + "</td></tr>");
+        $(this).attr("src", "/images/minus.png");
+    });
+    //Assign Click event to Minus Image.
+    $("body").on("click", "img[src*='minus.png']", function () {
+        $(this).attr("src", "/images/plus.png");
+        $(this).closest("tr").next().remove();
+    });
+</script>
